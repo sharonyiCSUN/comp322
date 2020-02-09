@@ -15,28 +15,29 @@ int main(int argc, char **argv){
 			int result = strcmp(argv[1], "-");
 			if(result == 0){
 				for(int i = 2; i < argc; i++){
-					printf("%s\n", argv[i]);
+				//	printf("%s\n", argv[i]);
 				}
 			}
 			else{
 				char ASCIIstr[8];
-				int sumoforiginal = 0;
 				printf("Original ASCII    Decimal  Parity   \n");
 				printf("-------- -------- -------- -------- \n");
-				for(int i = i; i < argc; i++){
-					
-					char copiedstr[9];	
-//					char* copiedstr = argv[i];					
-					strcpy(copiedstr, argv[i]);
+				for(int i = 1; i < argc; i++){
+//					int sumoforiginal = 0;
+//					char copiedstr[9];	
+					char* copiedstr = argv[i];					
+					//strcpy(copiedstr, argv[i]);
 					unsigned length = (unsigned)strlen(argv[i]);
 					if(length < 9){
 						for(int j = length; j <= 8; j++)
 							copiedstr[j] = '0';
 						copiedstr[8] = '\0';
 					}
+					
+					int sumoforiginal = 0;
 					for(int k = 0; k < 8; k++){
 						ASCIIstr[k] = copiedstr[k+1];
-						sumoforiginal += (int)ASCIIstr[k];
+						sumoforiginal += (int)copiedstr[k];
 					}
 
 					char *ASCIIptr;
@@ -49,7 +50,7 @@ int main(int argc, char **argv){
 					if(decimal > 101)
 						printf("%s        %c      %i ", copiedstr, ASCIIchar, decimal);
 
-					if(sumoforiginal % 2 == 0)
+					if(sumoforiginal%2 == 0)
 						printf("EVEN\n");
 					else
 						printf("ODD\n");
