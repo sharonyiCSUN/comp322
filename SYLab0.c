@@ -43,12 +43,21 @@ int main(int argc, char **argv){
 					char *ASCIIptr;
 					char ASCIIchar = strtol(ASCIIstr, &ASCIIptr, 2);
 					int decimal = (int)ASCIIchar;
-					if(decimal < 10)
-						printf("%s        %c        %i ", copiedstr, ASCIIchar, decimal);
-					if((decimal > 9) && (decimal < 100))
+
+					char *charVal[] = {"     NUL", "     SOH", "     STX", "     ETX", "     EOT", "     ENQ", "     ACK", 
+							   "     BEL", "      BS", "      HT", "      VT", "      FF", "      CR", "      SO", "      SI",
+							   "     DLE", "     DC1", "     DC2", "     DC3", "     DC4", "     NAK", "     SYN",
+							   "     ETB", "     CAN", "      EM", "     SUB", "     ESC", "      FS", "      GS", "      US",
+							   "   SPACE"};
+					char lastVal[] = "     DEL";
+					if(decimal < 33)
+						printf("%s %s        %i ", copiedstr, charVal[decimal], decimal);
+					if((decimal > 32) && (decimal < 100))
 						printf("%s        %c       %i ", copiedstr, ASCIIchar, decimal);
-					if(decimal > 101)
+					if((decimal > 101) && (decimal <127) ) 
 						printf("%s        %c      %i ", copiedstr, ASCIIchar, decimal);
+					if(decimal == 127)
+						printf("%s %s      %i ", copiedstr, lastVal, decimal);
 
 					if(sumoforiginal%2 == 0)
 						printf("EVEN\n");
