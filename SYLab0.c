@@ -4,73 +4,80 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include<unistd.h>
 
-int main(int argc, char **argv){
-	if (argc < 2){
-		printf("You need to proide at least one parameter\n");
-		exit(1);
-	}
-
-	if(argc > 1){
-		
-		char *charVal[] = {"     NUL", "     SOH", "     STX", "     ETX", "     EOT", "     ENQ", "     ACK", 
+void calculateStuff(char filearray[], int counter) {
+    if( counter < 8) {
+        for(int i=counter-1; i<8; ++i) {
+            filearray[i] = '0';
+        }
+    }
+    char *charVal[] = {"     NUL", "     SOH", "     STX", "     ETX", "     EOT", "     ENQ", "     ACK", 
 							   "     BEL", "      BS", "      HT", "      LF", "      VT", "      FF", "      CR",
 							   "      SO", "      SI", "     DLE", "     DC1", "     DC2", "     DC3", "     DC4",
 							   "     NAK", "     SYN", "     ETB", "     CAN", "      EM", "     SUB", "     ESC", 
 							   "      FS", "      GS","      RS", "      US", "   SPACE"};
-					char lastVal[] = "     DEL";
-		if((open(argv[1], O_RDONLY) == -1)){
-			int result = strcmp(argv[1], "-");
-			int placeholder = 0;
-			if(result == 0)
-				placeholder = 2;
-			else
-				placeholder = 1;
-				
-			char ASCIIstr[8];
-				printf("Original ASCII    Decimal  Parity   \n");
-				printf("-------- -------- -------- -------- \n");
-				for(int i = placeholder; i < argc; i++){
-//					int sumoforiginal = 0;
-//					char copiedstr[9];	
-					char* copiedstr = argv[i];					
-					//strcpy(copiedstr, argv[i]);
-					unsigned length = (unsigned)strlen(argv[i]);
-					if(length < 9){
-						for(int j = length; j <= 8; j++)
-							copiedstr[j] = '0';
-						copiedstr[8] = '\0';
-					}
-					
-					int sumoforiginal = 0;
-					for(int k = 0; k < 8; k++){
-						ASCIIstr[k] = copiedstr[k+1];
-						sumoforiginal += (int)copiedstr[k];
-					}
-
-					char *ASCIIptr;
-					char ASCIIchar = strtol(ASCIIstr, &ASCIIptr, 2);
-					int decimal = (int)ASCIIchar;
-
-					if(decimal < 10)
-						printf("%s %s        %i ", copiedstr, charVal[decimal], decimal);
-					if((decimal > 9) && (decimal < 33))
-						printf("%s %s       %i ", copiedstr, charVal[decimal], decimal);
-					if((decimal > 32) && (decimal < 100))
-						printf("%s        %c       %i ", copiedstr, ASCIIchar, decimal);
-					if((decimal > 101) && (decimal <127) ) 
-						printf("%s        %c      %i ", copiedstr, ASCIIchar, decimal);
-					if(decimal == 127)
-						printf("%s %s      %i ", copiedstr, lastVal, decimal);
-
-					if(sumoforiginal%2 == 0)
-						printf("EVEN\n");
-					else
-						printf("ODD\n");
-				}
-			}
-		}		
-	return 0;
+	char lastVal[] = "     DEL";
+    int sumoriginal = 0;
+    char ASCIIarray[8];
+	for(int k = 0; k < 8; k++)
+	{
+		ASCIIarray[k] = filearray[k+1];
+		sumoriginal += (int) filearray[k];
+	}
+	char *ASCIIpt;
+    char ASCIIc = strtol(ASCIIarray, &ASCIIpt, 2);
+    int dec = (int)ASCIIc;
+	
+	if(dec < 10){printf("%s %s        %i ", filearray, charVal[dec], dec);}
+    if((dec > 9) && (dec < 33)){printf("%s %s       %i ", filearray, charVal[dec], dec);}
+    if((dec > 32) && (dec < 100)){printf("%s        %c       %i ", filearray, ASCIIc, dec);}
+    if((dec > 101) && (dec <127) ){printf("%s        %c      %i ", filearray, ASCIIc, dec);}
+    if(dec == 127){printf("%s %s      %i ", filearray, lastVal, dec);}
+    if(sumoriginal%2 == 0){printf("EVEN\n");}
+	else{printf("ODD\n");}
 }
 
-
+int main(int argc, char *argv[]) {
+	char readchar;
+    int readfromfile;
+    int arraycounter = 0;
+    int bytes_read = -1;
+    
+	printf("Original ASCII    Decimal  Parity   \n");
+    printf("-------- -------- -------- -------- \n");
+    if(argc == 0) {
+        exit(0);
+    } else {
+        if(argv[1] == '-' && argc == 1) exit(0);
+        
+	    readfromfile = open(argv[1], O_RDONLY);
+	    if(readfromfile < 0) {
+	        if(argc == 1) {
+	            calculateStuff(argv[1], strlen(argv[1]));
+	        } else {
+	            int offset = 0;
+	            if(argv[1] == '-') {
+	                offset = 1;
+	            }
+                for(int i=offset; i<argc; ++i) {
+                    calculateStuff(argv[i], strlen(argv[i]));
+                }
+	        }
+	    } else {
+	        char input[8];
+            do {
+                bytes_read = read(readfromfile, &readchar, 1);
+                if(readchar != ' ') {
+                    input[arraycounter] = readchar;
+                    arraycounter++;
+                }
+                if(readchar == ' ' || bytes_read == 0) {   
+                    calculateStuff(input, arraycounter);
+                    arraycounter = 0;
+                }
+            } while(bytes_read != 0);
+	    }
+    }
+	return 0;
+}
