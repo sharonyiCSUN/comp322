@@ -12,6 +12,13 @@ int main(int argc, char **argv){
 	}
 
 	if(argc > 1){
+		
+		char *charVal[] = {"     NUL", "     SOH", "     STX", "     ETX", "     EOT", "     ENQ", "     ACK", 
+							   "     BEL", "      BS", "      HT", "      LF", "      VT", "      FF", "      CR",
+							   "      SO", "      SI", "     DLE", "     DC1", "     DC2", "     DC3", "     DC4",
+							   "     NAK", "     SYN", "     ETB", "     CAN", "      EM", "     SUB", "     ESC", 
+							   "      FS", "      GS","      RS", "      US", "   SPACE"};
+					char lastVal[] = "     DEL";
 		if((open(argv[1], O_RDONLY) == -1)){
 			int result = strcmp(argv[1], "-");
 			int placeholder = 0;
@@ -45,12 +52,6 @@ int main(int argc, char **argv){
 					char ASCIIchar = strtol(ASCIIstr, &ASCIIptr, 2);
 					int decimal = (int)ASCIIchar;
 
-					char *charVal[] = {"     NUL", "     SOH", "     STX", "     ETX", "     EOT", "     ENQ", "     ACK", 
-							   "     BEL", "      BS", "      HT", "      LF", "      VT", "      FF", "      CR",
-							   "      SO", "      SI", "     DLE", "     DC1", "     DC2", "     DC3", "     DC4",
-							   "     NAK", "     SYN", "     ETB", "     CAN", "      EM", "     SUB", "     ESC", 
-							   "      FS", "      GS","      RS", "      US", "   SPACE"};
-					char lastVal[] = "     DEL";
 					if(decimal < 10)
 						printf("%s %s        %i ", copiedstr, charVal[decimal], decimal);
 					if((decimal > 9) && (decimal < 33))
