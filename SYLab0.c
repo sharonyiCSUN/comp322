@@ -41,22 +41,22 @@ char ASCIIstr[8];
   int decimal = (int)ASCIIchar;
 
   
-  if(decimal < 10){ //Printing out converted data output
+  if(decimal < 10){ //Printing out converted data output that has a value less than 10
     printf("%s %s        %i ", copiedstr, charVal[decimal], decimal);
   }
-  if((decimal > 9) && (decimal < 33)){
+  if((decimal > 9) && (decimal < 33)){//Printing out converted data output that has a value greater than 9 & less than 33
     printf("%s %s       %i ", copiedstr, charVal[decimal], decimal);
   }
-  if((decimal > 32) && (decimal < 100)){
+  if((decimal > 32) && (decimal < 100)){ //Printing out converted data output that has a value greater than 32 & less than 100
     printf("%s        %c       %i ", copiedstr, ASCIIchar, decimal);
   }
-  if((decimal > 101) && (decimal <127)){ 
+  if((decimal > 101) && (decimal <127)){ //Printing out converted data output that has a value greater than 101 & less than 127
     printf("%s        %c      %i ", copiedstr, ASCIIchar, decimal);
   }
-  if(decimal == 127){
+  if(decimal == 127){ //Printing out converted data output that has a value equals to 127 (last ASCII character)
     printf("%s %s      %i ", copiedstr, lastVal, decimal);
   }
-  if(sumoforiginal%2 == 0){ //Printing out parity bit
+  if(sumoforiginal%2 == 0){ //Printing out parity bit (Even or Odd)
     printf("EVEN\n");
   }
   else{
@@ -68,12 +68,12 @@ char ASCIIstr[8];
 void padRight(char *byteRaw){ //Verifying if the array contains 1's and 0's (8-bits), then continues on to the converting function to be printed out
   char arrSize[8]; //8 bits + 1 terminator
   int endFlag = 0;
-  for(int i = 0; i < 8; i++){ //insert padding
+  for(int i = 0; i < 8; i++){ //insert padding right
     if((byteRaw[i] == '0' || byteRaw[i] == '1') && endFlag == 0){
       arrSize[i] = byteRaw[i];
     }
     else{
-      endFlag = 1;
+      endFlag = 1; //set the flag
       arrSize[i] = '0';
     }
   }
@@ -86,7 +86,7 @@ int main(int argc, char *argv[]){
     int file = 1; //assume there is a file
     int readfromfile = open(argv[1], O_RDONLY);
     if(readfromfile < 0){
-      file = 0; //set the flag;
+      file = 0; //set the flag
     }
    
     if(file == 0){  //it's cli input
