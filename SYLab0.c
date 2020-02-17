@@ -18,30 +18,30 @@ char* charVal[] = {"     NUL", "     SOH", "     STX", "     ETX", "     EOT", "
 		   "      FS", "      GS","      RS", "      US", "   SPACE"};
 char* lastVal = "     DEL"; //Dictionary for 127 ASCII character
 
-void calcStuff(char input[]){ //if the flags are good, we can now start to print out the converted output
+void convertStuff(char input[]){ //if the flags are good, we can now start to print out the converted output
 
 char ASCIIstr[8];
   char* copiedstr = input;
   unsigned length = (unsigned)strlen(input);
-  if(length < 9){
+  if(length < 9){ //padding right
     for(int j = length; j <= 8; j++){
       copiedstr[j] = '0';
     }
     copiedstr[8] = '\0';
   }
   
-  int sumoforiginal = 0;
+  int sumoforiginal = 0; //Converting to IASCII
   for(int k = 0; k < 8; k++){
     ASCIIstr[k] = copiedstr[k+1];
     sumoforiginal += (int)copiedstr[k];
   }
 
-  char* ASCIIptr;
+  char* ASCIIptr; //converting ASCIIchar to decimal
   char ASCIIchar = strtol(ASCIIstr, &ASCIIptr, 2);
   int decimal = (int)ASCIIchar;
 
   
-  if(decimal < 10){
+  if(decimal < 10){ //Printing out converted data output
     printf("%s %s        %i ", copiedstr, charVal[decimal], decimal);
   }
   if((decimal > 9) && (decimal < 33)){
@@ -56,7 +56,7 @@ char ASCIIstr[8];
   if(decimal == 127){
     printf("%s %s      %i ", copiedstr, lastVal, decimal);
   }
-  if(sumoforiginal%2 == 0){
+  if(sumoforiginal%2 == 0){ //Printing out parity bit
     printf("EVEN\n");
   }
   else{
@@ -65,7 +65,7 @@ char ASCIIstr[8];
  }
 
 
-void padRight(char *byteRaw){
+void padRight(char *byteRaw){ //Verifying if the array contains 1's and 0's (8-bits), then continues on to the converting function to be printed out
   char arrSize[8]; //8 bits + 1 terminator
   int endFlag = 0;
   for(int i = 0; i < 8; i++){ //insert padding
@@ -77,21 +77,19 @@ void padRight(char *byteRaw){
       arrSize[i] = '0';
     }
   }
-  calcStuff(arrSize);
+  convertStuff(arrSize);
 }
 
 
 int main(int argc, char *argv[]){
-  //read the command input
-  if(argc > 1){
+  if(argc > 1){ //read the command input
     int file = 1; //assume there is a file
     int readfromfile = open(argv[1], O_RDONLY);
     if(readfromfile < 0){
       file = 0; //set the flag;
     }
-    
-    //it's cli input
-    if(file == 0){
+   
+    if(file == 0){  //it's cli input
       if(argc > 2){
         printHeader();
 	      if(*argv[1] == '-'){
@@ -100,7 +98,7 @@ int main(int argc, char *argv[]){
     }
 	    else{
       for (int i = 1; i < argc; ++i)
-        padRight(argv[i]);
+        padRight(argv[i]); //Passing in the values of the data from the user to the function to be checked if it is 8-bits
       }
   }
       else{
@@ -113,12 +111,12 @@ int main(int argc, char *argv[]){
       char currentByte[8];
       char readchar;
       int index = 0;
-      while(read(readfromfile, &readchar, 1)){
+      while(read(readfromfile, &readchar, 1)){ //runs while there is still content in the file
         index++;
-        if(readchar == '0' || readchar == '1'){
+        if(readchar == '0' || readchar == '1'){ //verifies that there are only characters of 1's & 0's
           currentByte[index-1] = readchar;
         }
-        if(readchar == ' '){ //found a space, then we calculate
+        if(readchar == ' '){ //if there is a found space, then we proceed to converting
           padRight(currentByte);
           index = 0;
           for(int i = 0; i < 8; i++){ //null the array
@@ -126,7 +124,7 @@ int main(int argc, char *argv[]){
           }
         }
       }
-   	if(currentByte[0] == '0' || currentByte[0] == '1'){
+   	if(currentByte[0] == '0' || currentByte[0] == '1'){ //this is to check if the last array is empty or not, if not then it proceeds to the convertion
 		padRight(currentByte);
 	}
     }
@@ -134,6 +132,6 @@ int main(int argc, char *argv[]){
   else{
     exit(0);
   }
-  return 0;
+  return 0; //End of program
   }
 }
