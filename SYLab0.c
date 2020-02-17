@@ -19,10 +19,8 @@ char *charVal[] = {"     NUL", "     SOH", "     STX", "     ETX", "     EOT", "
 char lastVal[] = "     DEL"; //Dictionary for 127 ASCII character
 
 void calcStuff(char input[]){ //if the flags are good, we can now start to print out the converted output
-  //int result = strcmp(input, "-");
-    
-  char ASCIIstr[8];
 
+char ASCIIstr[8];
   char* copiedstr = input;
   unsigned length = (unsigned)strlen(input);
   if(length < 9){
@@ -61,7 +59,6 @@ void calcStuff(char input[]){ //if the flags are good, we can now start to print
 
 
 void padRight(char *byteRaw){
-//  int byteRawSize = (int) strlen(byteRaw);
   char arrSize[8]; //8 bits + 1 terminator
   int endFlag = 0;
   for(int i = 0; i < 8; i++){ //insert padding
@@ -90,12 +87,22 @@ int main(int argc, char *argv[]) {
     
     //it's cli input
     if(file == 0){
-      printHeader();
-      for (int i = 1; i < argc; ++i){
+      if(argc > 2){
+        printHeader();
+	      if(*argv[1] == '-'){
+	    for(int i = 2; i < argc; ++i)
+		    padRight(argv[i]);
+    }
+	    else{
+      for (int i = 1; i < argc; ++i)
         padRight(argv[i]);
       }
-    }
     
+  }
+      else{
+	      exit(0);
+      }
+    } 
     //it's a file
     if(file == 1){
       printHeader();
@@ -115,13 +122,13 @@ int main(int argc, char *argv[]) {
           }
         }
       }
-   	if(currentByte[0] == '0' || currentByte[0] == '1') //this checks if the array still has content in it, if it does, it goes through the iteration one last time to print out the last output
+   	if(currentByte[0] == '0' || currentByte[0] == '1')
 		padRight(currentByte);
     }
-  }
+ 
   else{
     exit(0);
   }
   return 0;
+  }
 }
-
