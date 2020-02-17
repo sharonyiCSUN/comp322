@@ -11,12 +11,12 @@ void printHeader(){
   printf("-------- -------- -------- -------- \n");
 }
 
-char *charVal[] = {"     NUL", "     SOH", "     STX", "     ETX", "     EOT", "     ENQ", "     ACK",  //Dictionary for 0-32 ASCII characters
+char* charVal[] = {"     NUL", "     SOH", "     STX", "     ETX", "     EOT", "     ENQ", "     ACK",  //Dictionary for 0-32 ASCII characters
 		   "     BEL", "      BS", "      HT", "      LF", "      VT", "      FF", "      CR",
 		   "      SO", "      SI", "     DLE", "     DC1", "     DC2", "     DC3", "     DC4",
 		   "     NAK", "     SYN", "     ETB", "     CAN", "      EM", "     SUB", "     ESC", 
 		   "      FS", "      GS","      RS", "      US", "   SPACE"};
-char lastVal[] = "     DEL"; //Dictionary for 127 ASCII character
+char* lastVal = "     DEL"; //Dictionary for 127 ASCII character
 
 void calcStuff(char input[]){ //if the flags are good, we can now start to print out the converted output
 
@@ -24,8 +24,9 @@ char ASCIIstr[8];
   char* copiedstr = input;
   unsigned length = (unsigned)strlen(input);
   if(length < 9){
-    for(int j = length; j <= 8; j++)
+    for(int j = length; j <= 8; j++){
       copiedstr[j] = '0';
+    }
     copiedstr[8] = '\0';
   }
   
@@ -35,27 +36,33 @@ char ASCIIstr[8];
     sumoforiginal += (int)copiedstr[k];
   }
 
-  char *ASCIIptr;
+  char* ASCIIptr;
   char ASCIIchar = strtol(ASCIIstr, &ASCIIptr, 2);
   int decimal = (int)ASCIIchar;
 
   
-  if(decimal < 10)
+  if(decimal < 10){
     printf("%s %s        %i ", copiedstr, charVal[decimal], decimal);
-  if((decimal > 9) && (decimal < 33))
+  }
+  if((decimal > 9) && (decimal < 33)){
     printf("%s %s       %i ", copiedstr, charVal[decimal], decimal);
-  if((decimal > 32) && (decimal < 100))
+  }
+  if((decimal > 32) && (decimal < 100)){
     printf("%s        %c       %i ", copiedstr, ASCIIchar, decimal);
-  if((decimal > 101) && (decimal <127) ) 
+  }
+  if((decimal > 101) && (decimal <127)){ 
     printf("%s        %c      %i ", copiedstr, ASCIIchar, decimal);
-  if(decimal == 127)
+  }
+  if(decimal == 127){
     printf("%s %s      %i ", copiedstr, lastVal, decimal);
-
-  if(sumoforiginal%2 == 0)
+  }
+  if(sumoforiginal%2 == 0){
     printf("EVEN\n");
-  else
+  }
+  else{
     printf("ODD\n");
-}
+  }
+ }
 
 
 void padRight(char *byteRaw){
@@ -71,14 +78,12 @@ void padRight(char *byteRaw){
     }
   }
   calcStuff(arrSize);
-  
 }
 
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[]){
   //read the command input
   if(argc > 1){
-  
     int file = 1; //assume there is a file
     int readfromfile = open(argv[1], O_RDONLY);
     if(readfromfile < 0){
@@ -97,7 +102,6 @@ int main(int argc, char *argv[]) {
       for (int i = 1; i < argc; ++i)
         padRight(argv[i]);
       }
-    
   }
       else{
 	      exit(0);
@@ -122,8 +126,9 @@ int main(int argc, char *argv[]) {
           }
         }
       }
-   	if(currentByte[0] == '0' || currentByte[0] == '1')
+   	if(currentByte[0] == '0' || currentByte[0] == '1'){
 		padRight(currentByte);
+	}
     }
  
   else{
