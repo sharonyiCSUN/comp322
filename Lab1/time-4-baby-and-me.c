@@ -7,7 +7,7 @@
 #include <sys/types.h>
 
 int main(){
-  pid_t cpid, cprocessid, processid,pprocessid;
+  pid_t cpid, processid, pprocessid;
   int status;
   time_t seconds;
 
@@ -24,24 +24,23 @@ if (cpid < 0){
 
   //child process
 else if (cpid == 0){
-    cprocessid = getpid();
+    processid = getpid();
     pprocessid = getppid();
-
-    printf("PPID: %i PID: %i\n",  pprocessid, cprocessid);
+//Printing out the Parent Process ID and Process ID of the child
+    printf("PPID: %i PID: %i\n",  pprocessid, processid);
     exit(EXIT_SUCCESS);
   }
 
   //parent process
-  //parent waits for the child to complete (symetrical)
 else{
+//gets the status of the child and the return value. Parent waits for the child to complete (symetrical)
   waitpid(cpid, &status, 0);
 
   pprocessid = getppid();
   processid = getpid();
-
+//displays the Parrent Process ID, Process ID, Child Process ID, and the Return Value of the child in the parent process
   printf("PPID: %i PID: %i CPID: %i RETVAL: %i\n",  pprocessid, processid, cpid, status);
-
-
+  
   seconds = time(NULL);
   printf("STOP: %li\n", seconds);
   }
