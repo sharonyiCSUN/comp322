@@ -1,27 +1,49 @@
-#include <stdio>
-#include <sys.types.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/types.h>
 #include <unistd.h>
+#include <sys/wait.h>
+#include <time.h>
+#include <sys/types.h>
 
 int main(){
-pid_t pid;
+  pid_t cpid, cprocessid, processid,pprocessid;
+  int status;
+  time_t seconds;
 
 //fork a child process
-  pid = fork();
+  seconds = time(NULL);
+  printf("START: %li\n", seconds);
+  cpid = fork();
+
 //an error has occurred
-  if (pid < 0){
+if (cpid < 0){
     printf("Fork Failed\n");
     return 1;
   }
+
   //child process
-  else if (pid == 0){
-    execlp("/bin/ls", "ls", NULL);
+else if (cpid == 0){
+    cprocessid = getpid();
+    pprocessid = getppid();
+
+    printf("PPID: %i PID: %i\n",  pprocessid, cprocessid);
+    exit(EXIT_SUCCESS);
   }
+
   //parent process
   //parent waits for the child to complete (symetrical)
 else{
-  wait(NULL);
-  printf("Child Complete\n");
-}
-return 0;
-}
+  waitpid(cpid, &status, 0);
 
+  pprocessid = getppid();
+  processid = getpid();
+
+  printf("PPID: %i PID: %i CPID: %i RETVAL: %i\n",  pprocessid, processid, cpid, status);
+
+
+  seconds = time(NULL);
+  printf("STOP: %li\n", seconds);
+  }
+  return 0;
+}
