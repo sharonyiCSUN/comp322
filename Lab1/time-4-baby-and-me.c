@@ -24,10 +24,11 @@ if (cpid < 0){
 
   //child process
 else if (cpid == 0){
-    processid = getpid();
-    pprocessid = getppid();
+    //processid = getpid();
+    //pprocessid = getppid();
 //Printing out the Parent Process ID and Process ID of the child
-    printf("PPID: %i PID: %i\n",  pprocessid, processid);
+    //printf("PPID: %i PID: %i\n",  pprocessid, processid);
+    printf("PPID: %i PID: %i\n",  getpid(), getppid());
     exit(EXIT_SUCCESS);
   }
 
@@ -40,7 +41,7 @@ else{
   processid = getpid();
 //displays the Parrent Process ID, Process ID, Child Process ID, and the Return Value of the child in the parent process
   printf("PPID: %i PID: %i CPID: %i RETVAL: %i\n",  pprocessid, processid, cpid, status);
-  
+
   seconds = time(NULL);
   printf("STOP: %li\n", seconds);
   }
