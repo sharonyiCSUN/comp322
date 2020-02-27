@@ -4,14 +4,27 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include <time.h>
-#include <sys/types.h>
+#include <sys/times.h>
+#include <inttypes.h>
+#include <sys/wait.h>
+
+//struct tms {
+  //clock_t tms_utime;
+  //clock_t tms_stime;
+  //clock_t tms_cutime;
+  //clock_t tms_cstime;
+//};
 
 int main(){
-  pid_t cpid, processid, pprocessid;
+  struct tms start_tms;
+  struct tms end_tms;
+
+  pid_t cpid; //, processid, pprocessid;
   int status;
   time_t seconds;
 
 //fork a child process
+  times(&start_tms);
   seconds = time(NULL);
   printf("START: %li\n", seconds);
   cpid = fork();
@@ -36,12 +49,12 @@ else if (cpid == 0){
 else{
 //gets the status of the child and the return value. Parent waits for the child to complete (symetrical)
   waitpid(cpid, &status, 0);
-
-  pprocessid = getppid();
-  processid = getpid();
+  times(&end_tms);
+  //pprocessid = getppid();
+  //processid = getpid();
 //displays the Parrent Process ID, Process ID, Child Process ID, and the Return Value of the child in the parent process
-  printf("PPID: %i PID: %i CPID: %i RETVAL: %i\n",  pprocessid, processid, cpid, status);
-
+  printf("PPID: %i PID: %i CPID: %i RETVAL: %i\n",  getppid(), getpid(), cpid, status);
+  printf("USER: %jd, SYS: %jd\nCUSER: %jd, CSYS:%jd\n", (intmax_t)end_tms.tms_utime, (intmax_t)end_tms.tms_stime, (intmax_t)end_tms.tms_cutime, (intmax_t)end_tms.tms_cstime);
   seconds = time(NULL);
   printf("STOP: %li\n", seconds);
   }
