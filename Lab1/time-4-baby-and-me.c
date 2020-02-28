@@ -6,14 +6,6 @@
 #include <time.h>
 #include <sys/times.h>
 #include <inttypes.h>
-#include <sys/wait.h>
-
-//struct tms {
-  //clock_t tms_utime;
-  //clock_t tms_stime;
-  //clock_t tms_cutime;
-  //clock_t tms_cstime;
-//};
 
 int main(){
   struct tms start_tms;
@@ -26,6 +18,7 @@ int main(){
 //fork a child process
   times(&start_tms);
   seconds = time(NULL);
+//displays the start time of the program
   printf("START: %li\n", seconds);
   cpid = fork();
 
@@ -37,8 +30,7 @@ if (cpid < 0){
 
   //child process
 else if (cpid == 0){
-    //processid = getpid();
-    //pprocessid = getppid();
+
 //Printing out the Parent Process ID and Process ID of the child
     //printf("PPID: %i PID: %i\n",  pprocessid, processid);
     printf("PPID: %i PID: %i\n",  getpid(), getppid());
@@ -47,15 +39,16 @@ else if (cpid == 0){
 
   //parent process
 else{
-//gets the status of the child and the return value. Parent waits for the child to complete (symetrical)
+//gets the status of the child and the return value. Parent waits for the child to complete (symmetrical)
   waitpid(cpid, &status, 0);
   times(&end_tms);
-  //pprocessid = getppid();
-  //processid = getpid();
-//displays the Parrent Process ID, Process ID, Child Process ID, and the Return Value of the child in the parent process
+
+//displays the Parent Process ID, Process ID, Child Process ID, and the Return Value of the child in the parent process
   printf("PPID: %i PID: %i CPID: %i RETVAL: %i\n",  getppid(), getpid(), cpid, status);
+//displays the User, System, Child User, Child System time
   printf("USER: %jd, SYS: %jd\nCUSER: %jd, CSYS:%jd\n", (intmax_t)end_tms.tms_utime, (intmax_t)end_tms.tms_stime, (intmax_t)end_tms.tms_cutime, (intmax_t)end_tms.tms_cstime);
   seconds = time(NULL);
+//displays the end time of the program
   printf("STOP: %li\n", seconds);
   }
   return 0;
