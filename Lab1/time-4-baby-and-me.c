@@ -7,10 +7,7 @@
 #include <sys/times.h>
 #include <inttypes.h>
 
-void displaypinfo(){
-//gets the status of the child and the return value. Parent waits for the child to complete (symmetrical)
-  waitpid(cpid, &status, 0);
-  times(&end_tms);
+void displaypinfo(pid_t cpid, int status){
 
 //displays the Parent Process ID, Process ID, Child Process ID, and the Return Value of the child in the parent process
   printf("PPID: %i PID: %i CPID: %i RETVAL: %i\n",  getppid(), getpid(), cpid, status);
@@ -48,8 +45,11 @@ else if (cpid == 0){
 
   //parent process
 else{
+//gets the status of the child and the return value. Parent waits for the child to complete (symmetrical)
+  waitpid(cpid, &status, 0);
+  times(&end_tms);
 //displays parent ID, process ID,child's process ID, and return value of child
-  displaypinfo();
+  displaypinfo(cpid, status);
 
 //displays the User, System, Child User, Child System time
   printf("USER: %jd, SYS: %jd\nCUSER: %jd, CSYS:%jd\n", (intmax_t)end_tms.tms_utime, (intmax_t)end_tms.tms_stime, (intmax_t)end_tms.tms_cutime, (intmax_t)end_tms.tms_cstime);
