@@ -8,6 +8,10 @@
 #include <inttypes.h>
 
 void displaypinfo(){
+//gets the status of the child and the return value. Parent waits for the child to complete (symmetrical)
+  waitpid(cpid, &status, 0);
+  times(&end_tms);
+
 //displays the Parent Process ID, Process ID, Child Process ID, and the Return Value of the child in the parent process
   printf("PPID: %i PID: %i CPID: %i RETVAL: %i\n",  getppid(), getpid(), cpid, status);
 }
@@ -44,10 +48,6 @@ else if (cpid == 0){
 
   //parent process
 else{
-//gets the status of the child and the return value. Parent waits for the child to complete (symmetrical)
-  waitpid(cpid, &status, 0);
-  times(&end_tms);
-
 //displays parent ID, process ID,child's process ID, and return value of child
   displaypinfo();
 
