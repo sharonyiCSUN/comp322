@@ -7,6 +7,11 @@
 #include <sys/times.h>
 #include <inttypes.h>
 
+void displaypinfo(){
+//displays the Parent Process ID, Process ID, Child Process ID, and the Return Value of the child in the parent process
+  printf("PPID: %i PID: %i CPID: %i RETVAL: %i\n",  getppid(), getpid(), cpid, status);
+}
+
 int main(){
   struct tms start_tms;
   struct tms end_tms;
@@ -43,8 +48,9 @@ else{
   waitpid(cpid, &status, 0);
   times(&end_tms);
 
-//displays the Parent Process ID, Process ID, Child Process ID, and the Return Value of the child in the parent process
-  printf("PPID: %i PID: %i CPID: %i RETVAL: %i\n",  getppid(), getpid(), cpid, status);
+//displays parent ID, process ID,child's process ID, and return value of child
+  displaypinfo();
+
 //displays the User, System, Child User, Child System time
   printf("USER: %jd, SYS: %jd\nCUSER: %jd, CSYS:%jd\n", (intmax_t)end_tms.tms_utime, (intmax_t)end_tms.tms_stime, (intmax_t)end_tms.tms_cutime, (intmax_t)end_tms.tms_cstime);
   seconds = time(NULL);
