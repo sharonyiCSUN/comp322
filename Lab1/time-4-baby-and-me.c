@@ -39,7 +39,7 @@ else if (cpid == 0){
 
 //Printing out the Parent Process ID and Process ID of the child
     //printf("PPID: %i PID: %i\n",  pprocessid, processid);
-    printf("PPID: %i PID: %i\n",  getpid(), getppid());
+    printf("PPID: %i PID: %i\n",  getppid(), getpid());
     exit(EXIT_SUCCESS);
   }
 
