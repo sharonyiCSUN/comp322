@@ -2,11 +2,14 @@
 #include <stdlib.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include <sys/wait.h>
 
 int main(int argc, char *argv[], char *envp[]){
 
+int status;
+
 if(argc < 2){
-  exit(EXIT_FAILURE);
+  return 1;
 }
 
   pid_t cpid;
@@ -20,22 +23,23 @@ if(argc < 2){
   //child process
   else if (cpid == 0){
 
-
-    int execve(argc[0], argv, envp);
-
     char *vArg[argc-1];
+    char *pEnv[] = {NULL};
 
     for(int i = 0; i < (argc - 1); i++){
       vArg[i] = argv[i+1];
     }
+    vArg[argc - 1] = NULL;
+    execve(vArg[0], vArg, pEnv);
 
-    
     exit(EXIT_SUCCESS);
   }
   //parent process
   else{
+
+    fprintf(stderr, "%s: $$ = %i\n", argv[1], cpid);
     waitpid(cpid, &status, 0);
-    printf(stderr, "%s: $$ = %i", argc[1], cpid\n);
-    printf("%s: $$ = %i", argc[1], status\n);
+    fprintf(stderr, "%s: $? = %i\n", argv[1], status);
   }
+  return 0;
 }

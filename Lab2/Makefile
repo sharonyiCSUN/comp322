@@ -7,9 +7,9 @@
 
 # EXECUTABLES is a Make Variable (similar to an environment variable) that lists all the
 # "executables" associated with the lab. 
-EXECUTABLES=Launch
-SRC=Launch.c
-OBJ=Launch.o
+EXECUTABLES=launch# Tube
+SRC=launch.c# tube.c
+OBJ=launch.o# tube.o
 #EXECUTABLES=Tube
 #SRC=Tube.c
 #OBJ=Tube.o
