@@ -7,9 +7,17 @@
 
 # EXECUTABLES is a Make Variable (similar to an environment variable) that lists all the
 # "executables" associated with the lab. 
-EXECUTABLES=launch# Tube
-SRC=launch.c# tube.c
-OBJ=launch.o# tube.o
+EXECUTABLES1=launch tube
+EXECUTABLES2=launch
+EXECUTABLES3=tube
+SRC=launch.c tube.c
+OBJ=launch.o tube.o
+SRC1=launch.c
+OBJ1=launch.o
+SRC2=tube.c
+OBJ12=tube.o
+
+
 #EXECUTABLES=Tube
 #SRC=Tube.c
 #OBJ=Tube.o
@@ -21,8 +29,14 @@ CFLAGS=-g
 
 # Here is my default target for the Makefile.  When I type make, this first target will
 # be created. I.e., all the executables
-all: $(EXECUTABLES)
+all: launch tube
 
+launch: launch.c
+	$(CC) $(CFLAGS) -c launch.c
+	$(CC) $(CFLAGS) -o $@ launch.o
+tube: tube.c
+	$(CC) $(CFLAGS) -c tube.c
+	$(CC) $(CFLAGS) -o $@ tube.o
 
 # On the following lines (which _must_ start with a tab), are the commands I need to type -- 
 # each time my source file is modified.
@@ -34,6 +48,7 @@ $(EXECUTABLES): $(SRC)
 # "clean" that I used to define all temporary
 # or intermediates.
 clean:
-	rm -f $(EXECUTABLES) $(OBJ) *~
-
+	rm -f $(EXECUTABLES1) $(OBJ) *~
+	rm -f $(EXECUTABLES2) $(OBJ1) *~
+	rm -f $(EXECUTABLES3) $(OBJ2) *~
 
