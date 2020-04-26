@@ -27,7 +27,7 @@ void handler(int sig){
     sigTermCounter = 0;
 
   if(sigTermCounter == 3)
-    printf("catcher: Total signals counter = %d\n", counter);
+    fprintf(stderr, "catcher: Total signals counter = %d\n", counter);
   else
     printf("SIG%s caught at %ld\n", sigNames[sig], timer);
 }
@@ -35,7 +35,7 @@ void handler(int sig){
 int getIndex(char *word){
   //if(word == "ABRT" || word == "IOT")
   //if(strcasecmp(word, "ABRT") ||
-  if(strcasecmp(word, "IOT")){
+  if(strcasecmp(word, "IOT") == 0){
     return 6;
 }
   //else if
