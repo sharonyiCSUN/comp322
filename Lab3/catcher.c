@@ -9,10 +9,10 @@
 
 int sigTermCounter = 0;
 
-char *sigNames[] = {"", "HUP", "INT", "QUIT", "ILL", "ABRT", "BUS", "FPE", "KILL",
+char *sigNames[] = {"", "HUP", "INT", "QUIT", "ILL", "TRAP", "ABRT", "BUS", "FPE", "KILL",
                 "USR1", "SEGV", "USR2", "PIPE", "ALRM", "TERM", "STKFLT", "CHLD"
                 "CONT", "STOP", "TSTP", "TTIN", "TTOU", "URG", "XCPU", "XFSZ",
-                "VTALRM", "PROF", "WINCH", "IO", "POLL", "PWR", "LOST", "SYS"};
+                "VTALRM", "PROF", "WINCH", "IO", "PWR", "SYS"};
 
 void handler(int sig){
   static int counter = 0;
